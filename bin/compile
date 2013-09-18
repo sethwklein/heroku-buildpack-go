@@ -50,7 +50,7 @@ else
     mkdir -p $cache/go-$ver
     cd $cache/go-$ver
     echo -n "-----> Installing Go $ver..."
-    curl -sO $url
+    curl -sSO $url
     tar zxf $file
     rm -f $file
     echo " done"
