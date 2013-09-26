@@ -10,9 +10,7 @@ ver=${GOVERSION:-1.1.2}
 file=${GOFILE:-go$ver.$(uname|tr A-Z a-z)-amd64.tar.gz}
 url=${GOURL:-http://go.googlecode.com/files/$file}
 
-if test -f $build/Godeps
-then name=$(<$build/Godeps jq -r .ImportPath)
-elif test -f $build/.godir
+if test -f $build/.godir
 then name=$(cat $build/.godir)
 else
     echo >&2 " !     A .godir is required. For instructions:"
@@ -51,14 +49,8 @@ cp -R $build/* $p
 
 unset GIT_DIR # unset git dir or it will mess with goinstall
 cd $p
-if test -f $build/Godeps
-then
-    echo "-----> Running: godep go get -tags heroku ./..."
-    godep go get -tags heroku ./...
-else
-    echo "-----> Running: go get -tags heroku ./..."
-    go get -tags heroku ./...
-fi
+echo "-----> Running: go get -tags heroku ./..."
+go get -tags heroku ./...
 
 mkdir -p $build/bin
 mv $GOPATH/bin/* $build/bin
