@@ -10,11 +10,11 @@ ver=${GOVERSION:-1.1.2}
 file=${GOFILE:-go$ver.$(uname|tr A-Z a-z)-amd64.tar.gz}
 url=${GOURL:-http://go.googlecode.com/files/$file}
 
-if test -f $build/.godir
-then name=$(cat $build/.godir)
+if test -f $build/goinstall
+then name=$(cat $build/goinstall)
 else
-    echo >&2 " !     A .godir is required. For instructions:"
-    echo >&2 " !     http://mmcgrana.github.io/2012/09/getting-started-with-go-on-heroku"
+    echo >&2 " !     A goinstall is required. For instructions:"
+    echo >&2 " !     https://github.com/sethwklein/heroku-buildpack-go"
     exit 1
 fi
 
@@ -39,22 +39,15 @@ else
 fi
 
 GOROOT=$cache/go-$ver/go export GOROOT
-GOPATH=$build/.heroku/g export GOPATH
+GOPATH=$build export GOPATH
 PATH=$GOROOT/bin:$PATH
 
 
-p=$GOPATH/src/$name
-mkdir -p $p
-cp -R $build/* $p
-
 unset GIT_DIR # unset git dir or it will mess with goinstall
-cd $p
-echo "-----> Running: go get -tags heroku ./..."
-go get -tags heroku ./...
+echo "-----> Running: go install -tags heroku $name"
+go install -tags heroku $name
 
-mkdir -p $build/bin
-mv $GOPATH/bin/* $build/bin
-rm -rf $build/.heroku
+# BUG(sk): optimize slug size by deleting $build/pkg and probably $build/src.
 
 mkdir -p $build/.profile.d
 echo 'PATH=$PATH:$HOME/bin' > $build/.profile.d/go.sh
