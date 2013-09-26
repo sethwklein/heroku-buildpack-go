@@ -38,10 +38,9 @@ else
     echo " done"
 fi
 
-GOROOT=$cache/go-$ver/go export GOROOT
-GOPATH=$build export GOPATH
-PATH=$GOROOT/bin:$PATH
-
+GOROOT=$cache/go-$ver/go; export GOROOT
+GOPATH=$build; export GOPATH
+PATH=$GOROOT/bin:$PATH; export PATH
 
 unset GIT_DIR # unset git dir or it will mess with goinstall
 echo "-----> Running: go install -tags heroku $name"
@@ -50,4 +49,4 @@ go install -tags heroku $name
 # BUG(sk): optimize slug size by deleting $build/pkg and probably $build/src.
 
 mkdir -p $build/.profile.d
-echo 'PATH=$PATH:$HOME/bin' > $build/.profile.d/go.sh
+echo 'export PATH=$PATH:$HOME/bin' > $build/.profile.d/go.sh
