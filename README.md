@@ -45,6 +45,9 @@ The buildpack adds a `heroku` [build constraint][build-constraint],
 to enable heroku-specific code. See the [App Engine build constraints article][app-engine-build-constraints]
 for more.
 
+The buildpack deletes the src and pkg directories after building to reduce
+slug size and lessen chance of unintended public code release.
+
 ## Hacking on this Buildpack
 
 To change this buildpack, fork it on GitHub. Push

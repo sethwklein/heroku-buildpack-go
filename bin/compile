@@ -46,7 +46,8 @@ unset GIT_DIR # unset git dir or it will mess with goinstall
 echo "-----> Running: go install -tags heroku $name"
 go install -tags heroku $name
 
-# BUG(sk): optimize slug size by deleting $build/pkg and probably $build/src.
+# optimize slug size
+rm -rf $build/pkg
 
 mkdir -p $build/.profile.d
 echo 'export PATH=$PATH:$HOME/bin' > $build/.profile.d/go.sh
