@@ -9,22 +9,6 @@ cache=$(cd "$2/" && pwd)
 ver=${GOVERSION:-1.1.2}
 file=${GOFILE:-go$ver.$(uname|tr A-Z a-z)-amd64.tar.gz}
 url=${GOURL:-http://go.googlecode.com/files/$file}
-buildpack=$(dirname $(dirname $0))
-arch=$(uname -m|tr A-Z a-z)
-if test $arch = x86_64
-then arch=amd64
-fi
-plat=$(uname|tr A-Z a-z)-$arch
-
-# Python
-venv=$cache/venv
-mkdir -p $cache/pip
-python=python2.7
-PATH=$buildpack/$plat/bin:$venv/bin:$PATH
-
-virtualenv() {
-    python "$buildpack/vendor/virtualenv-1.7/virtualenv.py" "$@"
-}
 
 if test -f $build/Godeps
 then name=$(<$build/Godeps jq -r .ImportPath)
@@ -60,22 +44,6 @@ GOROOT=$cache/go-$ver/go export GOROOT
 GOPATH=$build/.heroku/g export GOPATH
 PATH=$GOROOT/bin:$PATH
 
-
-if ! (which hg > /dev/null && which bzr > /dev/null)
-then
-    echo -n "       Installing Virtualenv..."
-    virtualenv --python $python --distribute --never-download --prompt='(venv) ' $venv > /dev/null 2>&1
-    . $venv/bin/activate > /dev/null 2>&1
-    echo " done"
-
-    echo -n "       Installing Mercurial..."
-    pip install mercurial > /dev/null 2>&1
-    echo " done"
-
-    echo -n "       Installing Bazaar..."
-    pip install bzr > /dev/null 2>&1
-    echo " done"
-fi
 
 p=$GOPATH/src/$name
 mkdir -p $p
