@@ -44,7 +44,7 @@ PATH=$GOROOT/bin:$PATH; export PATH
 
 unset GIT_DIR # unset git dir or it will mess with goinstall
 echo "-----> Running: go install -tags heroku $name"
-go install -tags heroku $name
+go install -a -tags heroku $name
 
 # optimize slug size
 rm -rf $build/pkg
