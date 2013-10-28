@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 # bin/detect <build-dir>
 
 if test -f "$1"/.goinstall; then
