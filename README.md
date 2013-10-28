@@ -29,7 +29,7 @@ your deployment involve fetching code from some random person's GitHub!
 Usage
 -----
 
-```
+```bash
 $ mkdir heroku-buildpack-go-example
 $ cd heroku-buildpack-go-example/
 $ mkdir -p src/example.com/serve-heroku/
@@ -48,20 +48,46 @@ func main() {
 	panic(http.ListenAndServe(":" + os.Getenv("PORT"), nil))
 }
 EOF
-$ echo 'serve-heroku' >.goinstall
+$ echo 'example.com/serve-heroku' >.goinstall
 $ echo 'web: serve-heroku' > Procfile
 $ git init
 Initialized empty Git repository in /Users/example/heroku-buildpack-go-example/.git/
 $ git add .
 $ git commit -m 'Add hello world'
-...
+[master (root-commit) 7293c81] Add hello world
+ 3 files changed, 15 insertions(+)
+ create mode 100644 .goinstall
+ create mode 100644 Procfile
+ create mode 100644 src/example.com/serve-heroku/main.go
 $ heroku create
-...
+Creating morning-wildwood-4996... done, stack is cedar
+http://morning-wildwood-4996.herokuapp.com/ | git@heroku.com:morning-wildwood-4996.git
+Git remote heroku added
 $ heroku config:add BUILDPACK_URL=https://github.com/sethwklein/heroku-buildpack-go-simple.git
-...
+Setting config vars and restarting morning-wildwood-4996... done, v3
+BUILDPACK_URL: https://github.com/sethwklein/heroku-buildpack-go-simple.git
 $ git push heroku master
-...
-$ curl -sS ...
+Counting objects: 8, done.
+Delta compression using up to 2 threads.
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (8/8), 672 bytes | 0 bytes/s, done.
+Total 8 (delta 0), reused 0 (delta 0)
+
+-----> Fetching custom git buildpack... done
+-----> GoSimple app detected
+-----> Installing Go 1.1.2... done
+-----> Running: go install -tags heroku example.com/serve-heroku
+-----> Discovering process types
+       Procfile declares types -> web
+
+-----> Compiled slug size: 1.2MB
+-----> Launching... done, v4
+       http://morning-wildwood-4996.herokuapp.com deployed to Heroku
+
+To git@heroku.com:morning-wildwood-4996.git
+ * [new branch]      master -> master
+$ curl -sS http://morning-wildwood-4996.herokuapp.com/
+Hello, world!
 ```
 
 Documentation
