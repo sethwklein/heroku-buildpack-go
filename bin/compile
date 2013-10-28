@@ -10,10 +10,10 @@ ver=${GOVERSION:-1.1.2}
 file=${GOFILE:-go$ver.$(uname|tr A-Z a-z)-amd64.tar.gz}
 url=${GOURL:-http://go.googlecode.com/files/$file}
 
-if test -f $build/goinstall
-then name=$(cat $build/goinstall)
+if test -f $build/.goinstall
+then name=$(cat $build/.goinstall)
 else
-    echo >&2 " !     A goinstall is required. For instructions:"
+    echo >&2 " !     A .goinstall file is required. For instructions:"
     echo >&2 " !     https://github.com/sethwklein/heroku-buildpack-go"
     exit 1
 fi
