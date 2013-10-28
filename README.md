@@ -15,9 +15,10 @@ History
 heroku-buildpack-go-simple is a fork of [kr][k]'s [heroku-buildpack-go][4]. The
 differences are:
 
-* `GOPATH` is the root of your project, `BUILD_DIR` in Heroku terms, not some
-invisible directory created by the buildpack.
-* `go install` is used instead of `go get`. You are expected to check your
+* `GOPATH` is the root of your project (`BUILD_DIR` in Heroku terms) not some
+mysterious directory created by the buildpack.
+* `go install` is used instead of `go get`. This means no Virtualenv, Mercurial,
+or Bazaar are installed. You are expected to check your
 dependencies into Git. This speeds deployment by reducing buildpack dependencies
 making the cache smaller and by reducing network activity used for fetching
 project dependencies. It also increases reliability and security by not having
