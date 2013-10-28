@@ -1,63 +1,91 @@
-# Heroku Buildpack: Go
+heroku-buildpack-go
+===================
 
-This is a [Heroku buildpack][buildpack] for [Go][go].
+heroku-buildpack-go is a [custom buildpack][1] for [Heroku][2] that supports
+[Go][3].
 
-## Getting Started
+[1]: https://devcenter.heroku.com/articles/buildpacks#using-a-custom-buildpack
+[2]: https://www.heroku.com/
+[3]: http://golang.org/
 
-Follow the guide at
-<http://mmcgrana.github.com/2012/09/getting-started-with-go-on-heroku.html>.
+History
+-------
 
-There's also a hello world sample app at
-<https://github.com/kr/go-heroku-example>.
+heroku-buildpack-go is a fork of kr's [heroku-buildpack-go][4]. The differences
+are:
 
-## Example
+* `GOPATH` is the root of your project, `BUILD_DIR` in Heroku terms, not some
+invisible directory created by the buildpack.
+* `go install` is used instead of `go get`. You are expected to check your
+dependencies into Git. This speeds deployment by reducing buildpack dependencies
+making the cache smaller and by reducing network activity used for fetching
+project dependencies. It also increases reliability and security by not having
+your deployment involve fetching code from some random person's GitHub!
+
+[4]: https://github.com/kr/heroku-buildpack-go
+
+Usage
+-----
 
 ```
-$ ls -A1
-./.git
-./.godir
-./Procfile
-./web.go
+$ mkdir heroku-buildpack-go-example
+$ cd heroku-buildpack-go-example/
+$ mkdir -p src/example.com/serve-heroku/
+$ cat >src/example.com/serve-heroku/main.go <<'EOF'
+package main
 
-$ heroku create -b https://github.com/kr/heroku-buildpack-go.git
+import (
+	"net/http"
+	"os"
+)
+
+func main() {
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("Hello, world!\n"))
+	})
+	panic(http.ListenAndServe(":" + os.Getenv("PORT"), nil))
+}
+EOF
+$ echo 'serve-heroku' >.goinstall
+$ echo 'web: serve-heroku' > Procfile
+$ git init
+Initialized empty Git repository in /Users/example/heroku-buildpack-go-example/.git/
+$ git add .
+$ git commit -m 'Add hello world'
 ...
-
+$ heroku create
+...
+$ heroku config:add BUILDPACK_URL=https://github.com/sethwklein/heroku-buildpack-go.git
+...
 $ git push heroku master
 ...
------> Fetching custom git buildpack... done
------> Go app detected
------> Installing Go 1.0.3... done
-       Installing Virtualenv... done
-       Installing Mercurial... done
-       Installing Bazaar... done
------> Running: go get -tags heroku ./...
------> Discovering process types
-       Procfile declares types -> web
------> Compiled slug size: 1.0MB
------> Launching... done, v5
-       http://pure-sunrise-3607.herokuapp.com deployed to Heroku
+$ curl -sS ...
 ```
 
-The buildpack will detect your repository as Go if it
-contains a `.go` file.
+Documentation
+-------------
 
-The buildpack adds a `heroku` [build constraint][build-constraint],
-to enable heroku-specific code. See the [App Engine build constraints article][app-engine-build-constraints]
-for more.
+This buildpack will detect your repository as Go if it contains a `.goinstall`
+file.
 
-The buildpack deletes the src and pkg directories after building to reduce
-slug size and lessen chance of unintended public code release.
+The .goinstall file contains import paths to be installed, separated by
+whitespace. Example:
 
-## Hacking on this Buildpack
+```
+example.com/server
+example.com/worker
+```
 
-To change this buildpack, fork it on GitHub. Push
-changes to your fork, then create a test app with
-`--buildpack YOUR_GITHUB_GIT_URL` and push to it. If you
-already have an existing app you may use `heroku config:add
-BUILDPACK_URL=YOUR_GITHUB_GIT_URL` instead of `--buildpack`.
+The buildpack adds a `heroku` [build constraint][5], to enable heroku-specific
+code. 
 
-[go]: http://golang.org/
-[buildpack]: http://devcenter.heroku.com/articles/buildpacks
-[quickstart]: http://mmcgrana.github.com/2012/09/getting-started-with-go-on-heroku.html
-[build-constraint]: http://golang.org/pkg/go/build/
-[app-engine-build-constraints]: http://blog.golang.org/2013/01/the-app-engine-sdk-and-workspaces-gopath.html
+It also deletes the pkg directory after building to reduce slug size.
+
+[5]: http://golang.org/pkg/go/build/#hdr-Build_Constraints
+
+Bugs
+----
+
+As always, [sethwklein][6] tries to keep up with pull requests and issues!
+
+[6]: https://github.com/sethwklein
