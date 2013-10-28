@@ -1,9 +1,10 @@
 heroku-buildpack-go-simple
 ==========================
 
-heroku-buildpack-go-simple is a [custom buildpack][1] for [Heroku][2] that
+[heroku-buildpack-go-simple][m] is a [custom buildpack][1] for [Heroku][2] that
 supports [Go][3].
 
+[m]: https://github.com/sethwklein/heroku-buildpack-go-simple
 [1]: https://devcenter.heroku.com/articles/buildpacks#using-a-custom-buildpack
 [2]: https://www.heroku.com/
 [3]: http://golang.org/
@@ -11,7 +12,7 @@ supports [Go][3].
 History
 -------
 
-heroku-buildpack-go-simple is a fork of kr's [heroku-buildpack-go][4]. The
+heroku-buildpack-go-simple is a fork of [kr][k]'s [heroku-buildpack-go][4]. The
 differences are:
 
 * `GOPATH` is the root of your project, `BUILD_DIR` in Heroku terms, not some
@@ -23,6 +24,7 @@ project dependencies. It also increases reliability and security by not having
 your deployment involve fetching code from some random person's GitHub!
 
 [4]: https://github.com/kr/heroku-buildpack-go
+[k]: https://github.com/kr
 
 Usage
 -----
@@ -79,7 +81,7 @@ example.com/worker
 The buildpack adds a `heroku` [build constraint][5], to enable heroku-specific
 code. 
 
-It also deletes the pkg directory after building to reduce slug size.
+It also deletes the `pkg` directory after building to reduce slug size.
 
 [5]: http://golang.org/pkg/go/build/#hdr-Build_Constraints
 
