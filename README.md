@@ -1,8 +1,8 @@
-heroku-buildpack-go
-===================
+heroku-buildpack-go-simple
+==========================
 
-heroku-buildpack-go is a [custom buildpack][1] for [Heroku][2] that supports
-[Go][3].
+heroku-buildpack-go-simple is a [custom buildpack][1] for [Heroku][2] that
+supports [Go][3].
 
 [1]: https://devcenter.heroku.com/articles/buildpacks#using-a-custom-buildpack
 [2]: https://www.heroku.com/
@@ -11,8 +11,8 @@ heroku-buildpack-go is a [custom buildpack][1] for [Heroku][2] that supports
 History
 -------
 
-heroku-buildpack-go is a fork of kr's [heroku-buildpack-go][4]. The differences
-are:
+heroku-buildpack-go-simple is a fork of kr's [heroku-buildpack-go][4]. The
+differences are:
 
 * `GOPATH` is the root of your project, `BUILD_DIR` in Heroku terms, not some
 invisible directory created by the buildpack.
@@ -55,7 +55,7 @@ $ git commit -m 'Add hello world'
 ...
 $ heroku create
 ...
-$ heroku config:add BUILDPACK_URL=https://github.com/sethwklein/heroku-buildpack-go.git
+$ heroku config:add BUILDPACK_URL=https://github.com/sethwklein/heroku-buildpack-go-simple.git
 ...
 $ git push heroku master
 ...

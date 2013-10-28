@@ -14,7 +14,7 @@ if test -f $build/.goinstall
 then name=$(cat $build/.goinstall)
 else
     echo >&2 " !     A .goinstall file is required. For instructions:"
-    echo >&2 " !     https://github.com/sethwklein/heroku-buildpack-go"
+    echo >&2 " !     https://github.com/sethwklein/heroku-buildpack-go-simple"
     exit 1
 fi
 

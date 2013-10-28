@@ -2,7 +2,7 @@
 # bin/detect <build-dir>
 
 if test -f "$1"/.goinstall; then
-    echo "Go"
+    echo "GoSimple"
     exit 0
 else
     exit 1
