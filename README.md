@@ -76,7 +76,7 @@ Total 8 (delta 0), reused 0 (delta 0)
 
 -----> Fetching custom git buildpack... done
 -----> GoSimple app detected
------> Installing Go 1.1.2... done
+-----> Installing Go 1.2... done
 -----> Running: go install -tags heroku example.com/serve-heroku
 -----> Discovering process types
        Procfile declares types -> web
