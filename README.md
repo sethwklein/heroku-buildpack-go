@@ -20,7 +20,7 @@ mysterious directory created by the buildpack.
 * `go install` is used instead of `go get`. This means no Virtualenv, Mercurial,
 or Bazaar are installed. You are expected to check your
 dependencies into Git. This speeds deployment by reducing buildpack dependencies
-making the cache smaller and by reducing network activity used for fetching
+(making the cache smaller) and by reducing network activity used for fetching
 project dependencies. It also increases reliability and security by not having
 your deployment involve fetching code from some random person's GitHub!
 
